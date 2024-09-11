@@ -27,6 +27,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
         const coffeeCollection = client.db('coffeeDb').collection('coffee')
+        const userCollection = client.db('coffeeDb').collection('user')
         // Post data from client side to server side
         app.post('/coffee',async(req,res)=>{
             const newCoffee = req.body 
@@ -70,6 +71,12 @@ async function run() {
                 }
             }
             const result = await coffeeCollection.updateOne(query,coffe,options)
+            res.send(result)
+        })
+        // Post user info from client side to database 
+        app.post('/user',async(req,res)=>{
+            const user = req.body 
+            const result = await userCollection.insertOne(user)
             res.send(result)
         })
         // Send a ping to confirm a successful connection
